@@ -22,7 +22,7 @@ from SocketServer import BaseRequestHandler
 from packets import MSSQLPreLoginAnswer, MSSQLNTLMChallengeAnswer
 from utils import *
 
-class TDS_Login_Packet():
+class TDS_Login_Packet:
 	def __init__(self, data):
 		
 		ClientNameOff     = struct.unpack('<h', data[44:46])[0]
@@ -63,7 +63,7 @@ def ParseSQLHash(data, client):
 	
 	NthashLen     = struct.unpack('<H',data[30:32])[0]
 	NthashOffset  = struct.unpack('<H',data[32:34])[0]
-	NtHash        = SSPIStart[NthashOffset:NthashOffset+NthashLen].encode("hex").upper()
+	NTHash        = SSPIStart[NthashOffset:NthashOffset+NthashLen].encode("hex").upper()
 	
 	DomainLen     = struct.unpack('<H',data[36:38])[0]
 	DomainOffset  = struct.unpack('<H',data[40:42])[0]

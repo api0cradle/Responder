@@ -30,7 +30,7 @@ Note: This module also works for WebDav NTLM authentication issued from Windows 
 
 - Built-in HTTPS Auth server.
 
-Same as above. The folder certs/ containa 2 default keys, including a dummy private key. This is *intentional*, the purpose is to have Responder working out of the box. A script was added in case you need to generate your own self signed key pair.
+Same as above. The folder certs/ contains 2 default keys, including a dummy private key. This is *intentional*, the purpose is to have Responder working out of the box. A script was added in case you need to generate your own self signed key pair.
 
 - Built-in LDAP Auth server.
 
@@ -46,7 +46,7 @@ This server will answer type A queries. This is really handy when it's combined 
 
 - Built-in WPAD Proxy Server.
 
-This module will capture all HTTP requests from anyone launching Internet Explorer on the network if they have "Auto-detect settings" enabled. This module is higly effective. You can configure your custom PAC script in Responder.conf and inject HTML into the server's responses. See Responder.conf.
+This module will capture all HTTP requests from anyone launching Internet Explorer on the network if they have "Auto-detect settings" enabled. This module is highly effective. You can configure your custom PAC script in Responder.conf and inject HTML into the server's responses. See Responder.conf.
 
 - Browser Listener
 
@@ -100,6 +100,16 @@ Edit this file /etc/NetworkManager/NetworkManager.conf and comment the line: `dn
 - Any rogue server can be turned off in Responder.conf.
 
 - This tool is not meant to work on Windows.
+
+- For OSX, please note: Responder must be launched with an IP address for the -i flag (e.g. -i YOUR_IP_ADDR). There is no native support in OSX for custom interface binding. Using -i en1 will not work. Also to run Responder with the best experience, run the following as root:
+
+    launchcl unload /System/Library/LaunchDaemons/com.apple.Kerberos.kdc.plist
+
+    launchcl unload /System/Library/LaunchDaemons/com.apple.mDNSResponder.plist
+
+    launchcl unload /System/Library/LaunchDaemons/com.apple.smbd.plist
+
+    launchcl unload /System/Library/LaunchDaemons/com.apple.netbiosd.plist
 
 ## Usage ##
 

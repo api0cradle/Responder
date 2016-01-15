@@ -76,7 +76,7 @@ def RespondToThisName(Name):
 	return False
 
 def RespondToThisHost(ClientIp, Name):
-	return (RespondToThisIP(ClientIp) and RespondToThisName(Name))
+	return RespondToThisIP(ClientIp) and RespondToThisName(Name)
 
 def IsOsX():
 	return True if settings.Config.Os_version == "darwin" else False
@@ -87,20 +87,31 @@ def OsInterfaceIsSupported():
 	else:
 		return False
 
-def FindLocalIP(Iface):
+def IsOsX():
+    Os_version = sys.platform
+    if Os_version == "darwin":
+        return True
+    else:
+        return False
+
+
+def FindLocalIP(Iface, OURIP):
 
 	if Iface == 'ALL':
 		return '0.0.0.0'
 
 	try:
-		s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-		s.setsockopt(socket.SOL_SOCKET, 25, Iface+'\0')
-		s.connect(("127.0.0.1",9))#RFC 863
-		ret = s.getsockname()[0]
-		s.close()
-
-		return ret
-
+            
+               if IsOsX():
+	           return OURIP
+               else:
+	           s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+	           s.setsockopt(socket.SOL_SOCKET, 25, Iface+'\0')
+	           s.connect(("127.0.0.1",9))#RFC 863
+	           ret = s.getsockname()[0]
+	           s.close()
+	           return ret
+                    
 	except socket.error:
 		print color("[!] Error: %s: Interface not found" % Iface, 1)
 		sys.exit(-1)
@@ -110,7 +121,7 @@ def WriteData(outfile, data, user):
 
 	logging.info("[*] Captured Hash: %s" % data)
 
-	if os.path.isfile(outfile) == False:
+	if not os.path.isfile(outfile):
 		with open(outfile,"w") as outf:
 			outf.write(data)
 			outf.write("\n")
